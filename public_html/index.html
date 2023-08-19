@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Student Enrollment Form</title>
+    </head>
+    <body>
+        <h2>Student Enrollment Form</h2>
+        <form id="enrollmentForm">
+            <label for="rollNo">Roll No:</label>
+            <input type="text" id="rollNo" name="rollNo" required>
+            <br>
+
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="fullName" required>
+            <br>
+
+            <label for="class">Class:</label>
+            <input type="text" id="class" name="class" required>
+            <br>
+
+            <label for="birthDate">Birth Date:</label>
+            <input type="date" id="birthDate" name="birthDate" required>
+            <br>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+            <br>
+
+            <label for="enrollmentDate">Enrollment Date:</label>
+            <input type="date" id="enrollmentDate" name="enrollmentDate" required>
+            <br>
+
+            <button type="button" id="saveBtn" disabled>Save</button>
+            <button type="button" id="updateBtn" disabled>Update</button>
+            <button type="button" id="resetBtn" disabled>Reset</button>
+        </form>
+
+        <script>
+            const form = document.getElementById("enrollmentForm");
+            const rollNoInput = document.getElementById("rollNo");
+            const fullNameInput = document.getElementById("fullName");
+            const classInput = document.getElementById("class");
+            const birthDateInput = document.getElementById("birthDate");
+            const addressInput = document.getElementById("address");
+            const enrollmentDateInput = document.getElementById("enrollmentDate");
+            const saveBtn = document.getElementById("saveBtn");
+            const updateBtn = document.getElementById("updateBtn");
+            const resetBtn = document.getElementById("resetBtn");
+
+            // Simulated database (using an object for demonstration)
+            const database = {};
+
+            rollNoInput.addEventListener("input", () => {
+                const rollNo = rollNoInput.value;
+                if (rollNo in database) {
+                    // Existing record
+                    fullNameInput.value = database[rollNo].fullName;
+                    classInput.value = database[rollNo].class;
+                    birthDateInput.value = database[rollNo].birthDate;
+                    addressInput.value = database[rollNo].address;
+                    enrollmentDateInput.value = database[rollNo].enrollmentDate;
+                    updateBtn.disabled = false;
+                } else {
+                    // New record
+                    fullNameInput.value = "";
+                    classInput.value = "";
+                    birthDateInput.value = "";
+                    addressInput.value = "";
+                    enrollmentDateInput.value = "";
+                    updateBtn.disabled = true;
+                }
+                saveBtn.disabled = false;
+                resetBtn.disabled = false;
+            });
+
+            saveBtn.addEventListener("click", () => {
+                const rollNo = rollNoInput.value;
+                if (!rollNo)
+                    return; // No Roll No entered
+
+                const newData = {
+                    fullName: fullNameInput.value,
+                    class: classInput.value,
+                    birthDate: birthDateInput.value,
+                    address: addressInput.value,
+                    enrollmentDate: enrollmentDateInput.value,
+                };
+
+                database[rollNo] = newData;
+                console.log("Data saved:", database);
+                form.reset();
+            });
+
+            updateBtn.addEventListener("click", () => {
+                const rollNo = rollNoInput.value;
+                if (!rollNo)
+                    return; // No Roll No entered
+
+                const updatedData = {
+                    fullName: fullNameInput.value,
+                    class: classInput.value,
+                    birthDate: birthDateInput.value,
+                    address: addressInput.value,
+                    enrollmentDate: enrollmentDateInput.value,
+                };
+
+                database[rollNo] = updatedData;
+                console.log("Data updated:", database);
+                form.reset();
+            });
+
+            resetBtn.addEventListener("click", () => {
+                form.reset();
+                saveBtn.disabled = true;
+                updateBtn.disabled = true;
+                resetBtn.disabled = true;
+                rollNoInput.removeAttribute("readonly");
+            });
+
+            // Start with the Roll No input focused
+            rollNoInput.focus();
+        </script>
+    </body>
+</html>
